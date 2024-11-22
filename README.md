@@ -1,54 +1,54 @@
 ### Integrantes do Grupo
-- Carlos - RM97528 - 2TDSPX
-- Kaique - RM551165 - 2TDSPX
-- Vinicius - RM98839 - 2TDSPX
+- Carlos - RM97528 - 2TDSPX  
+- Kaique - RM551165 - 2TDSPX  
+- Vinicius - RM98839 - 2TDSPX  
 
 ---
 
 ### Visão Geral
 
-O **EnergyKids App** é uma aplicação desenvolvida para educar e conscientizar crianças e jovens sobre práticas sustentáveis relacionadas à energia. O aplicativo também oferece funcionalidades para o gerenciamento de dispositivos eletrônicos, possibilitando cadastrar, editar, listar e excluir dispositivos com informações sobre seu consumo.
+O **EnergyKids App** é uma aplicação mobile desenvolvida para educar crianças e jovens sobre práticas sustentáveis relacionadas à energia. Além de conteúdo educativo, o aplicativo oferece funcionalidades para o gerenciamento de dispositivos eletrônicos, incluindo cadastro, edição, listagem e exclusão de dispositivos com informações detalhadas.
+
+O aplicativo utiliza **Firebase** para autenticação de usuários e gerenciamento de dados, garantindo uma experiência confiável e moderna.
 
 ---
 
 ### Arquitetura
 
 #### **Camada de Dados**
-A lógica de armazenamento e recuperação de dados utiliza um sistema que simula a estrutura do Firebase. Isso inclui autenticação e armazenamento de informações de dispositivos e usuários.
+O **Firebase** é responsável por:
+- **Autenticação**: Gerenciamento seguro de contas de usuários.
+- **Firestore**: Armazenamento e recuperação de dados relacionados a dispositivos e usuários.
 
 #### **Camada de Serviços**
-A lógica do negócio está distribuída por telas específicas, com funções para operações de CRUD e autenticação.
+A lógica de autenticação e CRUD (Create, Read, Update, Delete) está diretamente integrada aos serviços do Firebase, garantindo um fluxo eficiente e seguro.
 
 #### **Camada de Apresentação**
-A interface do usuário é construída usando **React Native** e **React Native Paper**, oferecendo uma experiência intuitiva e responsiva.
+Construída com **React Native**, a interface do EnergyKids é responsiva e otimizada para uma experiência de usuário agradável e acessível.
 
 ---
 
 ### Design Patterns Utilizados
 
-- **Simulação Firebase**: Simula os serviços Firebase (Authentication e Firestore) por meio de armazenamento local, facilitando a demonstração sem dependência de serviços externos.
-- **Controller Pattern**: Cada tela do aplicativo é responsável por gerenciar suas funcionalidades específicas.
-- **Componentização**: Uso de componentes reutilizáveis para melhorar a legibilidade e manutenção do código.
-
----
-
-### Arquitetura do Aplicativo
-
-O projeto é estruturado em uma abordagem **Monolítica**, onde todo o código de lógica, dados e apresentação está unificado no aplicativo.
+- **Firebase Services**: Uso completo dos serviços do Firebase Authentication e Firestore para autenticação e armazenamento de dados.
+- **Componentização**: Reutilização de componentes React Native para maior organização e escalabilidade.
+- **Controller Pattern**: Cada tela do aplicativo gerencia suas operações específicas.
 
 ---
 
 ### Instruções para Configuração e Execução
 
 #### **Pré-requisitos**
-1. **Node.js e npm**: Certifique-se de ter o Node.js instalado. [Baixe aqui](https://nodejs.org/).
-2. **React Native CLI**: Instale o CLI do React Native para rodar o aplicativo.
-3. **Dispositivo ou Emulador**: Android ou iOS.
+1. **Node.js e npm**: Certifique-se de que estão instalados. [Baixe aqui](https://nodejs.org/).
+2. **Ambiente de Desenvolvimento do React Native**: Instale o CLI do React Native.
+3. **Configuração Firebase**:
+   - Configure o Firebase seguindo as instruções em [Firebase Console](https://console.firebase.google.com/).
+   - Baixe o arquivo `google-services.json` para Android ou `GoogleService-Info.plist` para iOS e adicione ao projeto.
 
 #### **Passos para Configuração**
 1. **Clone o Repositório**
     ```bash
-    git clone https://github.com/Flores-Carlos/energykids.git
+    git clone https://github.com/SeuUsuario/EnergyKids.git
     cd EnergyKids
     ```
 
@@ -57,17 +57,12 @@ O projeto é estruturado em uma abordagem **Monolítica**, onde todo o código d
     npm install
     ```
 
-3. **Configure o Ambiente**
-   - Certifique-se de que o arquivo `Icone.js` está em `assets` para emular o Firebase.
+3. **Configure o Firebase**
+   - Certifique-se de que os arquivos `google-services.json` (Android) ou `GoogleService-Info.plist` (iOS) estão nos diretórios corretos.
 
 4. **Execute o Aplicativo**
-    Para Android:
     ```bash
-    npm run android
-    ```
-    Para iOS:
-    ```bash
-    npm run ios
+    npm start
     ```
 
 ---
@@ -75,54 +70,95 @@ O projeto é estruturado em uma abordagem **Monolítica**, onde todo o código d
 ### Funcionalidades de Autenticação
 
 #### **Registro**
-- **Descrição**: Permite que novos usuários criem contas com informações básicas como nome, idade, email e senha.
-- **Simulação**: Os dados são armazenados localmente usando um sistema que simula o Firebase Authentication.
+- **Descrição**: Permite que novos usuários criem contas fornecendo nome, idade, gênero, email e senha.  
+- **Integração com Firebase**:  
+    ```javascript
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => console.log('Usuário registrado no Firebase!'));
+    ```
 
 #### **Login**
-- **Descrição**: Valida as credenciais do usuário para permitir acesso ao aplicativo.
-- **Simulação**: Dados de autenticação são comparados com as informações salvas localmente.
+- **Descrição**: Valida as credenciais do usuário para conceder acesso ao aplicativo.  
+- **Integração com Firebase**:  
+    ```javascript
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => console.log('Login realizado com sucesso!'));
+    ```
 
 ---
 
 ### Funcionalidades de Gerenciamento de Dispositivos
 
 #### **Adicionar Dispositivo**
-- **Descrição**: Usuários podem cadastrar dispositivos eletrônicos com informações como nome, descrição e voltagem.
-- **Simulação**: Os dados são salvos localmente, simulando o Firebase Firestore.
+- **Descrição**: Permite cadastrar dispositivos com informações como nome, voltagem (watts) e descrição.  
+- **Integração com Firebase**:  
+    ```javascript
+    firestore()
+      .collection('devices')
+      .add({ userId, deviceName, voltage, description })
+      .then(() => console.log('Dispositivo adicionado ao Firestore!'));
+    ```
 
 #### **Listar Dispositivos**
-- **Descrição**: Exibe todos os dispositivos cadastrados, permitindo visualizar os dados.
+- **Descrição**: Exibe todos os dispositivos cadastrados pelo usuário.  
+- **Integração com Firebase**:  
+    ```javascript
+    firestore()
+      .collection('devices')
+      .where('userId', '==', currentUserId)
+      .get()
+      .then(querySnapshot => console.log(querySnapshot.docs));
+    ```
 
 #### **Editar Dispositivo**
-- **Descrição**: Permite que os usuários editem dispositivos cadastrados, desde que sejam os criadores do registro.
+- **Descrição**: Permite que os usuários editem os detalhes de dispositivos já cadastrados.  
+- **Integração com Firebase**:  
+    ```javascript
+    firestore()
+      .collection('devices')
+      .doc(deviceId)
+      .update({ deviceName, voltage, description })
+      .then(() => console.log('Dispositivo atualizado no Firestore!'));
+    ```
 
 #### **Excluir Dispositivo**
-- **Descrição**: Os dispositivos podem ser excluídos pelos seus criadores.
+- **Descrição**: Remove dispositivos cadastrados pelo usuário.  
+- **Integração com Firebase**:  
+    ```javascript
+    firestore()
+      .collection('devices')
+      .doc(deviceId)
+      .delete()
+      .then(() => console.log('Dispositivo excluído do Firestore!'));
+    ```
 
 ---
 
 ### Testando o Aplicativo
 
-1. **Login e Cadastro**:
-   - Use emails e senhas fictícios para registrar novos usuários.
-   - Realize login com os dados registrados para validar o fluxo.
+1. **Login e Registro**:
+   - Crie contas fictícias e valide o fluxo de autenticação.
+   - Realize login com as credenciais registradas.
 
 2. **Gerenciamento de Dispositivos**:
-   - Adicione dispositivos, verifique na listagem, edite e exclua.
-   - Certifique-se de que as permissões de edição e exclusão funcionam conforme esperado.
+   - Adicione dispositivos com informações relevantes.
+   - Edite e exclua dispositivos cadastrados.
 
 ---
 
 ### Futuro Planejado
 
-1. **Integração Real com Firebase**:
-   - Substituir a simulação pelo uso efetivo do Firebase Authentication e Firestore.
-   - Adicionar funcionalidades como recuperação de senha e autenticação com redes sociais.
+1. **Relatórios Avançados**:
+   - Resumo do consumo total de energia baseado nos dispositivos cadastrados.
 
-2. **Funcionalidades Avançadas**:
-   - Relatórios sobre o consumo total dos dispositivos cadastrados.
-   - Gamificação para incentivar boas práticas de economia de energia.
+2. **Autenticação Social**:
+   - Implementação de login com Google e Facebook.
+
+3. **Expansão Multiplataforma**:
+   - Desenvolvimento de uma versão web para maior acessibilidade.
 
 ---
 
-Essa documentação foi criada para servir como guia completo para o desenvolvimento e utilização do EnergyKids App.
+Essa documentação detalha o uso do aplicativo **EnergyKids**, projetado para educar e promover práticas sustentáveis, utilizando o poder do Firebase para oferecer uma experiência robusta e segura.
