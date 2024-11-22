@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "132192324597",
+    "project_id": "energykidsapp",
+    "storage_bucket": "energykidsapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:132192324597:android:00b4d703808ce28033aebc",
+        "android_client_info": {
+          "package_name": "com.energkids.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtFNvSiZ6Huev-uHtd9wuXdtkPQyh1bvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,77 @@
+apply plugin: "com.android.application"
+apply plugin: "com.google.gms.google-services" // Adicionando o plugin do Google Services
+apply plugin: "org.jetbrains.kotlin.android"
+
+import com.android.build.OutputFile
+
+project.ext.react = [
+    enableHermes: false,  // Se você quiser habilitar o Hermes, defina como true.
+]
+
+apply from: "../../node_modules/react-native/react.gradle"
+
+def enableSeparateBuildPerCPUArchitecture = false
+def enableProguardInReleaseBuilds = false
+def jscFlavor = "org.webkit:android-jsc:+" // Se você quiser usar o JSC Intl, use "org.webkit:android-jsc-intl:+"
+def enableHermes = project.ext.react.enableHermes
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.energykids.appedu" // Substitua pelo ID do seu aplicativo
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+
+    splits {
+        abi {
+            reset()
+            enable enableSeparateBuildPerCPUArchitecture
+            universalApk true  // Crie um APK universal, além dos específicos para a arquitetura.
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            // Quando estiver pronto para publicação, descomente as linhas abaixo para habilitar Proguard.
+            // minifyEnabled enableProguardInReleaseBuilds
+            // proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    packagingOptions {
+        pickFirst '**/libc++_shared.so'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.facebook.react:react-native:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext.kotlinVersion}"
+
+    // Firebase Core
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-auth' // Para autenticação do Firebase
+    implementation 'com.google.firebase:firebase-firestore' // Para o Firestore (armazenamento de dispositivos)
+
+    // Outras dependências
+    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
+        exclude group:'com.facebook.fbjni'
+    }
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
+        exclude group:'com.facebook.fbjni'
+    }
+    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
+        exclude group:'com.facebook.fbjni'
+    }
+}
+
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
